@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    This file is an EXAMPLE configuration file.  While the configuration presented in this 
+    example file is functional, it isn't very interesting.  However, there are lots of example
+    attributes, encoders, and a couple example data connectors.
+    
+    Not all attribute definitions, data connectors, or principal connectors are demonstrated.
+    Deployers should refer to the Shibboleth 2 documentation for a complete list of components 
+    and their options.
+-->
+<resolver:AttributeResolver xmlns:resolver="urn:mace:shibboleth:2.0:resolver" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                            xmlns:pc="urn:mace:shibboleth:2.0:resolver:pc" xmlns:ad="urn:mace:shibboleth:2.0:resolver:ad" 
+                            xmlns:dc="urn:mace:shibboleth:2.0:resolver:dc" xmlns:enc="urn:mace:shibboleth:2.0:attribute:encoder" 
+                            xmlns:sec="urn:mace:shibboleth:2.0:security" 
+                            xsi:schemaLocation="urn:mace:shibboleth:2.0:resolver classpath:/schema/shibboleth-2.0-attribute-resolver.xsd
+                                               urn:mace:shibboleth:2.0:resolver:pc classpath:/schema/shibboleth-2.0-attribute-resolver-pc.xsd
+                                               urn:mace:shibboleth:2.0:resolver:ad classpath:/schema/shibboleth-2.0-attribute-resolver-ad.xsd
+                                               urn:mace:shibboleth:2.0:resolver:dc classpath:/schema/shibboleth-2.0-attribute-resolver-dc.xsd
+                                               urn:mace:shibboleth:2.0:attribute:encoder classpath:/schema/shibboleth-2.0-attribute-encoder.xsd
+                                               urn:mace:shibboleth:2.0:security classpath:/schema/shibboleth-2.0-security.xsd">
+    <!-- Name Identifier related attributes -->
+    <resolver:AttributeDefinition id="transientId" xsi:type="ad:TransientId">
+        <resolver:AttributeEncoder xsi:type="enc:SAML1StringNameIdentifier" nameFormat="urn:mace:shibboleth:1.0:nameIdentifier"/>
+        <resolver:AttributeEncoder xsi:type="enc:SAML2StringNameID" nameFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:transient"/>
+    </resolver:AttributeDefinition>
+
+    <!-- ========================================== -->
+    <!--      Data Connectors                       -->
+    <!-- ========================================== -->
+
+
+    <!-- ========================================== -->
+    <!--      Principal Connectors                  -->
+    <!-- ========================================== -->
+    <resolver:PrincipalConnector xsi:type="pc:Transient" id="shibTransient" nameIDFormat="urn:mace:shibboleth:1.0:nameIdentifier"/>
+    <resolver:PrincipalConnector xsi:type="pc:Transient" id="saml1Unspec" nameIDFormat="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"/>
+    <resolver:PrincipalConnector xsi:type="pc:StoredId" id="saml2Persistent" nameIDFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" xmlns:pc="urn:mace:shibboleth:2.0:resolver:pc" storedIdDataConnectorRef="StoredId"/>
+	<resolver:AttributeDefinition xsi:type="PrincipalName" xmlns="urn:mace:shibboleth:2.0:resolver:ad" id="principalName" />
+				<!--sourceAttributeID="principalName"-->
+	<resolver:DataConnector xsi:type="StoredId" xmlns="urn:mace:shibboleth:2.0:resolver:dc"
+				id="StoredId"
+				salt="CHANGEME"
+				generatedAttributeID="storedId"
+				sourceAttributeID="uniqid"
+				queryTimeout="0">
+		<resolver:Dependency ref="idpdata_idpread_roles" />
+		<ApplicationManagedConnection jdbcDriver="org.postgresql.Driver"
+                                              jdbcURL="jdbc:postgresql://[::1]:5432/idpdata?user=idpstoredwrite&amp;password=CHANGEME"
+                                              />
+	</resolver:DataConnector>
+
+	
+
+
+	<resolver:AttributeDefinition id="persistentId" xsi:type="Simple" xmlns="urn:mace:shibboleth:2.0:resolver:ad" sourceAttributeID="storedId">
+		<resolver:Dependency ref="StoredId" />
+		<resolver:AttributeEncoder xsi:type="SAML1StringNameIdentifier" xmlns="urn:mace:shibboleth:2.0:attribute:encoder" nameFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" />
+		<resolver:AttributeEncoder xsi:type="SAML2StringNameID" xmlns="urn:mace:shibboleth:2.0:attribute:encoder" nameFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" />
+	</resolver:AttributeDefinition>
+
+
+	<resolver:DataConnector xsi:type="RelationalDatabase" xmlns="urn:mace:shibboleth:2.0:resolver:dc" id="idpdata_idpread_roles" queryTimeout="0">
+		<ApplicationManagedConnection jdbcDriver="org.postgresql.Driver"
+                                              jdbcURL="jdbc:postgresql://[::1]:5432/idpdata?user=idpread&amp;password=CHANGEME"
+                                              />
+		<QueryTemplate>
+			<![CDATA[
+			SELECT "FriendlyName","Data","UniqueID" FROM users_to_roles
+                                                  LEFT JOIN users ON users."UserID"=users_to_roles."UserID"
+                                                  LEFT JOIN roles ON roles."RoleID"=users_to_roles."RoleID"
+                                                WHERE users."Email"='${requestContext.principalName}'
+			]]>
+		</QueryTemplate>
+		<Column columnName="FriendlyName" attributeID="rolename" />
+		<Column columnName="Data" attributeID="roledata" />
+		<Column columnName="UniqueID" attributeID="uniqid" />
+	</resolver:DataConnector>
+	<resolver:AttributeDefinition id="rolesData" xsi:type="Simple" xmlns="urn:mace:shibboleth:2.0:resolver:ad" sourceAttributeID="roledata">
+		<resolver:Dependency ref="idpdata_idpread_roles" />
+	</resolver:AttributeDefinition>
+	<resolver:AttributeDefinition id="rolesName" xsi:type="Simple" xmlns="urn:mace:shibboleth:2.0:resolver:ad" sourceAttributeID="rolename">
+		<resolver:Dependency ref="idpdata_idpread_roles" />
+	</resolver:AttributeDefinition>
+	<resolver:AttributeDefinition xsi:type="ad:Script" id="roles">
+		<resolver:Dependency ref="rolesData" />
+		<resolver:Dependency ref="rolesName" />
+		<resolver:Dependency ref="idpdata_idpread_roles" />
+		<resolver:AttributeEncoder xsi:type="SAML2String" xmlns="urn:mace:shibboleth:2.0:attribute:encoder" name="https://idp.hakurei.fi/roles" nameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" />
+		<ad:Script><![CDATA[
+			importPackage(Packages.edu.internet2.middleware.shibboleth.common.attribute.provider);
+			importPackage(Packages.org.slf4j);
+			function parseHstore(val) {
+				var object = {};
+				var values = [];
+				var i = 1;
+				var start = 1;
+				while(i < val.length) {
+					c = val.charAt(i);
+					if(c == '\\') {
+						i = i + 2;
+					} else if(c == '"') {
+						values.push(val.substring(start, i));
+						i = i + 4;
+						start = i;
+					} else {
+						i++;
+					}
+				}
+				for(i = 0; i < values.length; i = i + 2) {
+					object[new String(values[i])] = new String(values[i+1]);
+				}
+				return object;	
+			}
+			logger = LoggerFactory.getLogger("edu.internet2.middleware.shibboleth.resolver.Script.scriptTest");
+			roles = new BasicAttribute("roles");
+			if (typeof rolesData != "undefined" && rolesData != null && rolesData.getValues().size() > 0){
+				for (i=0; i < rolesData.getValues().size(); i++) {
+					role = {}
+					role[new String(rolesName.getValues().get(i))] = parseHstore(new String(rolesData.getValues().get(i)));
+					roles.getValues().add(JSON.stringify(role));
+				}
+			}
+		]]></ad:Script>
+	</resolver:AttributeDefinition>
+
+
+	<resolver:DataConnector xsi:type="RelationalDatabase" xmlns="urn:mace:shibboleth:2.0:resolver:dc" id="idpdata_idpread_email" queryTimeout="0">
+		<ApplicationManagedConnection jdbcDriver="org.postgresql.Driver"
+                                              jdbcURL="jdbc:postgresql://[::1]:5432/idpdata?user=idpread&amp;password=CHANGEME"
+                                              />
+		<QueryTemplate>
+			<![CDATA[
+			SELECT "AttributeValue" FROM users_to_attributes
+                                                  LEFT JOIN users ON users."UserID"=users_to_attributes."UserID"
+                                                  LEFT JOIN attributes on attributes."AttributeID"=users_to_attributes."AttributeID"
+                                                WHERE users."Email"='${requestContext.principalName}'
+                                                  AND attributes."Name"='https://idp.hakurei.fi/attributes/email'
+			]]>
+		</QueryTemplate>
+		<Column columnName="AttributeValue" attributeID="email" />
+	</resolver:DataConnector>
+	<resolver:AttributeDefinition xsi:type="ad:Simple" id="email">
+		<resolver:Dependency ref="idpdata_idpread_email" />
+		<resolver:AttributeEncoder xsi:type="SAML2String" xmlns="urn:mace:shibboleth:2.0:attribute:encoder" name="https://idp.hakurei.fi/attributes/email" nameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" />
+	</resolver:AttributeDefinition>
+	
+
+</resolver:AttributeResolver>

@@ -1,0 +1,19 @@
+{
+  "name": "MpdControl",
+  "version": "0.0.0",
+  "description": "MpdControl",
+  "main": "server.js",
+  "author": {
+    "name": "buzer",
+    "email": ""
+  },
+  "dependencies": {
+    "socket.io": "^0.9.16",
+    "express": "^4.1.1",
+    "passport-saml-too": "0.0.6",
+    "passport": "^0.2.0",
+    "cookie-parser": "^1.0.1",
+    "express-session": "^1.0.4",
+    "body-parser": "^1.0.2"
+  }
+}

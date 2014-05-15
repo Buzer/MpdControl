@@ -1,0 +1,26 @@
+var config = {};
+
+//This path is used when client requests cover for current song
+//MPD returns the path to file from song database's base path
+//The file part is replaced by cover.jpg and appended to this path
+config.coverbasepath = '/Music';
+//Attribute which contains roles & assoicated data
+config.roleattr = 'https://idp.hakurei.fi/roles';
+//Port
+config.port = 7915;
+
+//Config for socket.io
+config.io = {};
+//Log level
+config.io.loglevel = 1;
+//Allowed origins
+config.io.origins = 'http://mpd.example.org:80/ http://localhost:36262';
+
+config.crypto = {};
+//These should match the LoginControl's values
+config.crypto.algo = 'aes192';
+config.crypto.key = '1234567890123456790';
+
+
+
+module.exports = config;

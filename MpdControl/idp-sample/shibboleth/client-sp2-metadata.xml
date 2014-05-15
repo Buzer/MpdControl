@@ -1,0 +1,81 @@
+<EntityDescriptor
+    xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+    entityID="mpd_hakurei_fi">
+    <SPSSODescriptor
+        AuthnRequestsSigned="false"
+        WantAssertionsSigned="false"
+        protocolSupportEnumeration=
+            "urn:oasis:names:tc:SAML:2.0:protocol">
+        <KeyDescriptor use="signing">
+            <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+                <X509Data>
+                    <X509Certificate>
+MIIDkzCCAnugAwIBAgIJAP7YZzKppBXCMA0GCSqGSIb3DQEBBQUAMGAxCzAJBgNV
+BAYTAkZJMRAwDgYDVQQIDAdVdXNpbWFhMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRn
+aXRzIFB0eSBMdGQxHDAaBgNVBAMME21wZC10ZXN0Lmhha3VyZWkuZmkwHhcNMTQw
+NTA2MTc1MzM5WhcNMzQwNTAxMTc1MzM5WjBgMQswCQYDVQQGEwJGSTEQMA4GA1UE
+CAwHVXVzaW1hYTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMRww
+GgYDVQQDDBNtcGQtdGVzdC5oYWt1cmVpLmZpMIIBIjANBgkqhkiG9w0BAQEFAAOC
+AQ8AMIIBCgKCAQEAxCvv52ef2oILgFPVOrMBSxZEa4o7y+Ui8mbwldr37jvsREKt
+IpUlfut6WDeEtthHrPACJfxlbjQ7vc/rzL7vX3QA22MXbh6ODvqADSKLUBcLygkb
+Mv9kJyaguynHxSF6wjpnzy/pjL/nxJZm1fQU6b1LN0zM4G9vBZuWj5ArS/ifmMlj
+KMUCKsueA8tZg6iyUCiE9dUQtK1Qx35nDHfL37bq+2qcKtXacHywLg9BCIfFVIBl
+bls6etIVaJB1qJtYXoHhAlbTsbnlHIDJy/WWEfJEnVdpdCEPmfy/Km1r5sl9nnrv
+bXjj0Y4PqH9ndljOJtvbl+t0XxLCP6RlRdE/cQIDAQABo1AwTjAdBgNVHQ4EFgQU
+ZczwlR2rJgd5r7buLnpsFIGhj8YwHwYDVR0jBBgwFoAUZczwlR2rJgd5r7buLnps
+FIGhj8YwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQUFAAOCAQEAEzDkmNcJ7YQl
+e32CC+dZbuVMe7NwviXX88vuuVY5N/uzaFGxl4mjDtrq5lL7QzpyIi8IYslhBRWF
+O+B5BjZC990aB5MhzRTrHlw/PG5L1ifH4xZ2LZSa0A3OLHnkRpMlhIRsXgwnjiCm
+8uLs5dms7YZhMq8Zf3hVJxR2hK1WnwOr6V+cBOJd1hbqtZ7AG3RPIvPDKbvAsE68
+NgJ32MAGYFA/iVJQQi+GkptzGF6/m9J2bvnKI5T/JD1YcDchn66Ek7WxZUgboKnD
+5XXcDSh1ACiOhI+WMwUUoPHNiIGPSjWYHf/zNVNVbz2d1ZMHjzPTPOTk9uULUMum
+JvuZL1y+Sw==
+                    </X509Certificate>
+                </X509Data>
+            </KeyInfo>
+        </KeyDescriptor>
+<!--        <KeyDescriptor use="encryption">
+            <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+                <X509Data>
+                    <X509Certificate>
+MIIDkzCCAnugAwIBAgIJAP7YZzKppBXCMA0GCSqGSIb3DQEBBQUAMGAxCzAJBgNV
+BAYTAkZJMRAwDgYDVQQIDAdVdXNpbWFhMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRn
+aXRzIFB0eSBMdGQxHDAaBgNVBAMME21wZC10ZXN0Lmhha3VyZWkuZmkwHhcNMTQw
+NTA2MTc1MzM5WhcNMzQwNTAxMTc1MzM5WjBgMQswCQYDVQQGEwJGSTEQMA4GA1UE
+CAwHVXVzaW1hYTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMRww
+GgYDVQQDDBNtcGQtdGVzdC5oYWt1cmVpLmZpMIIBIjANBgkqhkiG9w0BAQEFAAOC
+AQ8AMIIBCgKCAQEAxCvv52ef2oILgFPVOrMBSxZEa4o7y+Ui8mbwldr37jvsREKt
+IpUlfut6WDeEtthHrPACJfxlbjQ7vc/rzL7vX3QA22MXbh6ODvqADSKLUBcLygkb
+Mv9kJyaguynHxSF6wjpnzy/pjL/nxJZm1fQU6b1LN0zM4G9vBZuWj5ArS/ifmMlj
+KMUCKsueA8tZg6iyUCiE9dUQtK1Qx35nDHfL37bq+2qcKtXacHywLg9BCIfFVIBl
+bls6etIVaJB1qJtYXoHhAlbTsbnlHIDJy/WWEfJEnVdpdCEPmfy/Km1r5sl9nnrv
+bXjj0Y4PqH9ndljOJtvbl+t0XxLCP6RlRdE/cQIDAQABo1AwTjAdBgNVHQ4EFgQU
+ZczwlR2rJgd5r7buLnpsFIGhj8YwHwYDVR0jBBgwFoAUZczwlR2rJgd5r7buLnps
+FIGhj8YwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQUFAAOCAQEAEzDkmNcJ7YQl
+e32CC+dZbuVMe7NwviXX88vuuVY5N/uzaFGxl4mjDtrq5lL7QzpyIi8IYslhBRWF
+O+B5BjZC990aB5MhzRTrHlw/PG5L1ifH4xZ2LZSa0A3OLHnkRpMlhIRsXgwnjiCm
+8uLs5dms7YZhMq8Zf3hVJxR2hK1WnwOr6V+cBOJd1hbqtZ7AG3RPIvPDKbvAsE68
+NgJ32MAGYFA/iVJQQi+GkptzGF6/m9J2bvnKI5T/JD1YcDchn66Ek7WxZUgboKnD
+5XXcDSh1ACiOhI+WMwUUoPHNiIGPSjWYHf/zNVNVbz2d1ZMHjzPTPOTk9uULUMum
+JvuZL1y+Sw==
+                    </X509Certificate>
+                </X509Data>
+            </KeyInfo>
+            <EncryptionMethod Algorithm=
+                "https://www.w3.org/2001/04/xmlenc#aes128-cbc">
+                <KeySize xmlns="https://www.w3.org/2001/04/xmlenc#">128</KeySize>
+            </EncryptionMethod>
+        </KeyDescriptor>-->
+        <SingleLogoutService
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+            Location="https://mpd.example.org/login/callback"
+            ResponseLocation="https://mpd.example.org/"/>
+        <NameIDFormat>
+            urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
+        </NameIDFormat>
+        <AssertionConsumerService
+            index="1"
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+            Location="https://mpd.example.org/login/callback"/>
+    </SPSSODescriptor>
+</EntityDescriptor>
